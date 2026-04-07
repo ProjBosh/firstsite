@@ -1,5 +1,7 @@
+// Пакет контроллера
 package com.example.firstsite.controller;
 
+// Импорт аннотаций Spring
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
  *      http://localhost:9090/
  */
 
+// Аннотация @RestController означает, что класс обрабатывает HTTP-запросы
 @RestController
 public class HelloController {
 
+    // @GetMapping("/") обрабатывает GET-запросы на корневой URL (/)
     @GetMapping("/")
     public String sayHello() {
+        // Этот текст вернётся в браузер
         return "Hello world!";
     }
 }
