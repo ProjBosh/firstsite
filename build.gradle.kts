@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+    // Зависимости для Thymeleaf во frontend
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // Зависимости для запуска сайта
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

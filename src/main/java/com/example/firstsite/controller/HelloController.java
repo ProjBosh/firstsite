@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Запуск для тестовой проверки работоспособности сайта осуществляется на:
- *      http://localhost:9090/
+ *      http://localhost:9090/hello
  */
 
 // Аннотация @RestController означает, что класс обрабатывает HTTP-запросы
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     // @GetMapping("/") обрабатывает GET-запросы на корневой URL (/)
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String sayHello() {
         // Этот текст вернётся в браузер
         return "Hello world!";
