@@ -2,15 +2,55 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Обработчик ссылок</title>
+    <link rel="icon" href="data:,">
+    <title>Сокращатель ссылок</title>
 </head>
 <body style="text-align: center; margin-top: 50px;">
-    <form action="/submit" method="get">
-        <label>Введите ссылку:</label>
-        <br><br>
-        <input type="text" name="url" size="50">
-        <br><br>
-        <button type="submit">Выполнить</button>
-    </form>
+    <label>Введите ссылку:</label>
+    <br><br>
+    <input type="text" id="urlInput" size="50">
+    <br><br>
+    <button onclick="processUrl()">Выполнить</button>
+    <br><br>
+    <div id="result"></div>
+
+    <script>
+        async function processUrl() {
+            const url = document.getElementById('urlInput').value.trim();
+            const resultDiv = document.getElementById('result');
+
+            if (!url) {
+                resultDiv.innerHTML = '<span style="color: red;">Введите ссылку!</span>';
+                return;
+            }
+
+            resultDiv.innerHTML = '⏳ Обработка...';
+
+            try {
+                const response = await fetch('/api/shorten', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url: url})
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.innerHTML = '<span style="color: green;">✅ ' + data.message + '<br>Ссылка: ' + data.shortUrl + '</span>';
+                } else {
+                    resultDiv.innerHTML = '<span style="color: red;">❌ Ошибка: ' + (data.error || 'Что-то пошло не так') + '</span>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<span style="color: red;">❌ Ошибка соединения с сервером</span>';
+            }
+        }
+
+        // Отправка по Enter
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processUrl();
+            }
+        });
+    </script>
 </body>
 </html>
