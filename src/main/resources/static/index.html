@@ -19,33 +19,40 @@
          * Асинхронная функция для обработки ссылки
          * Отправляет введенную ссылку на сервер и отображает результат
          */
-        async function processUrl() {                                       // 1. Объявляем асинхронную функцию
-            const url = document.getElementById('urlInput').value.trim();   // 2. Получаем текст из поля ввода
-            const resultDiv = document.getElementById('result');            // 3. Находим блок для результата
+        async function processUrl() {
+            const url = document.getElementById('urlInput').value.trim();   // Получаем текст из поля ввода
+            const resultDiv = document.getElementById('result');            // Находим блок для результата
 
-            if (!url) {                                                     // 4. Проверяем, пустое ли поле
-                resultDiv.innerHTML = 'Введите ссылку!';                    // 5. Если пусто - показываем ошибку
-                return;                                                     // 6. И выходим из функции
+            // Проверяем, пустое ли поле
+            if (!url) {
+                resultDiv.innerHTML = 'Введите ссылку!';
+                return;
             }
 
-            resultDiv.innerHTML = 'Обработка...';                           // 7. Показываем индикатор загрузки
+            // Показываем индикатор загрузки
+            resultDiv.innerHTML = 'Обработка...';
 
-            try {                                                           // 8. Начинаем блок перехвата ошибок
-                const response = await fetch('/api/shorten', {              // 9. Отправляем POST запрос на сервер
-                    method: 'POST',                                         // 10. Указываем метод POST
-                    headers: {'Content-Type': 'application/json'},          // 11. Указываем тип данных
-                    body: JSON.stringify({url: url})                        // 12. Превращаем ссылку в JSON
+            try {
+                // Отправляем POST запрос на сервер
+                const response = await fetch('/api/shorten', {
+                    method: 'POST',                                  // Указываем метод POST
+                    headers: {'Content-Type': 'application/json'},   // Указываем тип данных
+                    body: JSON.stringify({url: url})                 // Превращаем ссылку в JSON
                 });
 
-                const data = await response.json();                         // 13. Получаем ответ от сервера
+                // Получаем ответ от сервера
+                const data = await response.json();
 
-                if (response.ok) {                                          // 14. Если статус ответа 200 (успех)
-                    resultDiv.innerHTML = data.message;                     // 15. Показываем успех зеленым
-                } else {                                                    // 16. Если статус ошибка (400, 500 и т.д.)
-                    resultDiv.innerHTML = 'Ошибка';                         // 17. Показываем ошибку красным
+                if (response.ok) {          // Если статус ответа 200 (успех)
+                    // Показываем успех
+                    resultDiv.innerHTML = data.message + " " + data.shortURL;
+                } else {                    // Если статус ошибка (400, 500 и т.д.)
+                    // Показываем ошибку
+                    resultDiv.innerHTML = 'Ошибка';
                 }
-            } catch (error) {                                               // 18. Ловим ошибки сети
-                resultDiv.innerHTML = 'Ошибка соединения';                  // 19. Сообщаем о проблемах с сетью
+            } catch (error) {               // Ловим ошибки сети
+                // Сообщаем о проблемах с сетью
+                resultDiv.innerHTML = 'Ошибка соединения';
             }
         }
 
@@ -54,7 +61,8 @@
          * Позволяет отправлять ссылку по нажатию клавиши Enter
          */
         document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') processUrl();          // При нажатии Enter вызываем processUrl
+            if (e.key === 'Enter')
+                processUrl();          // При нажатии Enter вызываем processUrl
         });
     </script>
 </body>

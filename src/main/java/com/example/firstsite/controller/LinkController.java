@@ -19,8 +19,8 @@ public class LinkController {
 
         // 3. Создаем ответ
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Ссылка получена_!");
-        response.put("shortUrl", originalUrl + "_Hello"); // пока возвращаем ту же ссылку
+        response.put("message", "Ссылка получена -> ");
+        response.put("shortURL", originalUrl + "_Hello"); // пока возвращаем ту же ссылку
 
         // 4. Возвращаем ответ
         return response;
