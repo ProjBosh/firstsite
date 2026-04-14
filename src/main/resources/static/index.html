@@ -6,56 +6,56 @@
     <title>Сокращатель ссылок</title>
 </head>
 <body style="text-align: center; margin-top: 50px;">
-<label>Введите ссылку:</label>
-<br><br>
-<input type="text" id="urlInput" size="50">
-<br><br>
-<button onclick="processUrl()">Выполнить</button>
-<br><br>
-<div id="result"></div>
+    <label>Введите ссылку:</label>
+    <br><br>
+    <input type="text" id="urlInput" size="50">
+    <br><br>
+    <button onclick="processUrl()">Выполнить</button>
+    <br><br>
+    <div id="result"></div>
 
-<script>
-    /**
-     * Асинхронная функция для обработки ссылки
-     * Отправляет введенную ссылку на сервер и отображает результат
-     */
-    async function processUrl() {                                       // 1. Объявляем асинхронную функцию
-        const url = document.getElementById('urlInput').value.trim();   // 2. Получаем текст из поля ввода
-        const resultDiv = document.getElementById('result');            // 3. Находим блок для результата
+    <script>
+        /**
+         * Асинхронная функция для обработки ссылки
+         * Отправляет введенную ссылку на сервер и отображает результат
+         */
+        async function processUrl() {                                       // 1. Объявляем асинхронную функцию
+            const url = document.getElementById('urlInput').value.trim();   // 2. Получаем текст из поля ввода
+            const resultDiv = document.getElementById('result');            // 3. Находим блок для результата
 
-        if (!url) {                                                     // 4. Проверяем, пустое ли поле
-            resultDiv.innerHTML = 'Введите ссылку!';                    // 5. Если пусто - показываем ошибку
-            return;                                                     // 6. И выходим из функции
-        }
-
-        resultDiv.innerHTML = 'Обработка...';                           // 7. Показываем индикатор загрузки
-
-        try {                                                           // 8. Начинаем блок перехвата ошибок
-            const response = await fetch('/api/shorten', {              // 9. Отправляем POST запрос на сервер
-                method: 'POST',                                         // 10. Указываем метод POST
-                headers: {'Content-Type': 'application/json'},          // 11. Указываем тип данных
-                body: JSON.stringify({url: url})                        // 12. Превращаем ссылку в JSON
-            });
-
-            const data = await response.json();                         // 13. Получаем ответ от сервера
-
-        if (response.ok) {                                              // 14. Если статус ответа 200 (успех)
-            resultDiv.innerHTML = '✅ ' + data.message;                 // 15. Показываем успех зеленым
-            } else {                                                    // 16. Если статус ошибка (400, 500 и т.д.)
-                resultDiv.innerHTML = '❌ Ошибка';                      // 17. Показываем ошибку красным
+            if (!url) {                                                     // 4. Проверяем, пустое ли поле
+                resultDiv.innerHTML = 'Введите ссылку!';                    // 5. Если пусто - показываем ошибку
+                return;                                                     // 6. И выходим из функции
             }
-        } catch (error) {                                               // 18. Ловим ошибки сети
-            resultDiv.innerHTML = '❌ Ошибка соединения';               // 19. Сообщаем о проблемах с сетью
-        }
-    }
 
-    /**
-     * Обработчик нажатия клавиш для поля ввода
-     * Позволяет отправлять ссылку по нажатию клавиши Enter
-     */
-    document.getElementById('urlInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') processUrl();          // При нажатии Enter вызываем processUrl
-    });
-</script>
+            resultDiv.innerHTML = 'Обработка...';                           // 7. Показываем индикатор загрузки
+
+            try {                                                           // 8. Начинаем блок перехвата ошибок
+                const response = await fetch('/api/shorten', {              // 9. Отправляем POST запрос на сервер
+                    method: 'POST',                                         // 10. Указываем метод POST
+                    headers: {'Content-Type': 'application/json'},          // 11. Указываем тип данных
+                    body: JSON.stringify({url: url})                        // 12. Превращаем ссылку в JSON
+                });
+
+                const data = await response.json();                         // 13. Получаем ответ от сервера
+
+                if (response.ok) {                                          // 14. Если статус ответа 200 (успех)
+                    resultDiv.innerHTML = data.message;                     // 15. Показываем успех зеленым
+                } else {                                                    // 16. Если статус ошибка (400, 500 и т.д.)
+                    resultDiv.innerHTML = 'Ошибка';                         // 17. Показываем ошибку красным
+                }
+            } catch (error) {                                               // 18. Ловим ошибки сети
+                resultDiv.innerHTML = 'Ошибка соединения';                  // 19. Сообщаем о проблемах с сетью
+            }
+        }
+
+        /**
+         * Обработчик нажатия клавиш для поля ввода
+         * Позволяет отправлять ссылку по нажатию клавиши Enter
+         */
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') processUrl();          // При нажатии Enter вызываем processUrl
+        });
+    </script>
 </body>
 </html>
